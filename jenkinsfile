@@ -3,13 +3,23 @@ pipeline {
 
     stages {
         stage('CI') {
-            steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+            stages {
+                stage('Get Code from Github') {
+                    steps {
+                        checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                    }
+                }
+
+                stage('Sonar Qube Analysis') {
+                    steps {
+                        echo 'Sonar Qube Analysis..'
+                    }
+                }
             }
         }
         stage('CD') {
             steps{
-                echo 'Starting deployment'
+                echo 'Starting deployment..'
             }
         }
     }
