@@ -1,0 +1,13 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('CI') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/springAppJenkins']])
+            }
+        }
+        stage('CD') {
+        }
+    }
+}
