@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('CI') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/springAppJenkins']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
             }
         }
         stage('CD') {
