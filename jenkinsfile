@@ -8,6 +8,9 @@ pipeline {
             }
         }
         stage('CD') {
+            steps{
+                echo 'Starting deployment'
+            }
         }
     }
 }
