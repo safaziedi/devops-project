@@ -54,36 +54,51 @@ pipeline {
                         checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
                     }
                 }
-        stage('Sonar Qube Analysis') {
-            environment {
-                SCANNER_HOME = tool 'scanner'
-                PROJECT_NAME = "spring-boot-angular-postgresql"
-            }
-            steps {
-                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
-                    bat """
-                        ${SCANNER_HOME}/bin/sonar-scanner.bat ^
-                        -Dsonar.projectKey=${PROJECT_NAME} ^
-                        -Dsonar.sources=back/src ^
-                        -Dsonar.java.binaries=./back ^
-                        -Dsonar.host.url=http://localhost:9000
-                    """
-                }
-            }
-        }
-        stage('Quality Gate'){
-            steps {
-                script{
-                    timeout(time: 1, unit: 'HOURS') {
-                        def qg = waitForQualityGate()
-                        if (qg.status != 'OK') {
-                            echo "Pipeline aborted due to quality gate failure: ${qg.status}"
-                        }
-                    }
-                }
-            }
+        // stage('Sonar Qube Analysis') {
+        //     environment {
+        //         SCANNER_HOME = tool 'scanner'
+        //         PROJECT_NAME = "spring-boot-angular-postgresql"
+        //     }
+        //     steps {
+        //         withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
+        //             bat """
+        //                 ${SCANNER_HOME}/bin/sonar-scanner.bat ^
+        //                 -Dsonar.projectKey=${PROJECT_NAME} ^
+        //                 -Dsonar.sources=back/src ^
+        //                 -Dsonar.java.binaries=./back ^
+        //                 -Dsonar.host.url=http://localhost:9000
+        //             """
+        //         }
+        //     }
+        // }
+        // stage('Quality Gate'){
+        //     steps {
+        //         script{
+        //             timeout(time: 1, unit: 'HOURS') {
+        //                 def qg = waitForQualityGate()
+        //                 if (qg.status != 'OK') {
+        //                     echo "Pipeline aborted due to quality gate failure: ${qg.status}"
+        //                 }
+        //             }
+        //         }
+        //     }
 
-        }
+        // }
+
+        stage('SonarQube analysis') {
+        withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
+        bat 'mvn clean package sonar:sonar'
+    } 
+  }
+}
+stage("Quality Gate"){
+    timeout(time: 1, unit: 'HOURS') { 
+    def qg = waitForQualityGate()
+    if (qg.status != 'OK') {
+        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+    }
+  }
+}
 
         // stage('CD') {
         //     steps{
