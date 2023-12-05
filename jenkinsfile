@@ -61,25 +61,21 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
-                    // bat "${SCANNER_HOME}/bin/sonar-scanner.bat"
                     bat """
                         ${SCANNER_HOME}/bin/sonar-scanner.bat ^
                         -Dsonar.projectKey=${PROJECT_NAME} ^
                         -Dsonar.sources=back/src ^
                         -Dsonar.java.binaries=./back
                     """
-                    // bat '''${SCANNER_HOME}/bin/sonar-scanner.bat \
-                    //     -Dsonar.projectKey=$PROJECT_NAME \
-                    //     -Dsonar.sources=.'''
                 }
-                // script {
-                //     timeout(time: 1, unit: 'HOURS') {
-                //         def qg = waitForQualityGate()
-                //         if (qg.status != 'OK') {
-                //             error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                //         }
-                //     }
-                // }
+                script {
+                    timeout(time: 1, unit: 'HOURS') {
+                        def qg = waitForQualityGate()
+                        if (qg.status != 'OK') {
+                            error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                        }
+                    }
+                }
             }
         }
         // stage('CD') {
