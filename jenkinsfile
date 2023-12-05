@@ -65,7 +65,8 @@ pipeline {
                     bat """
                         ${SCANNER_HOME}/bin/sonar-scanner.bat ^
                         -Dsonar.projectKey=${PROJECT_NAME} ^
-                        -Dsonar.sources=.
+                        -Dsonar.sources=back/src ^
+                        -Dsonar.java.binaries=back/target/classes
                     """
                     // bat '''${SCANNER_HOME}/bin/sonar-scanner.bat \
                     //     -Dsonar.projectKey=$PROJECT_NAME \
