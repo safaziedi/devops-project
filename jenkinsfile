@@ -56,11 +56,11 @@ pipeline {
             }
             steps {
                 checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])                // test code with sonarqube
-                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectKey=$PROJECT_NAME \
-                        -Dsonar.sources=.'''
-                }
+                // withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
+                //     bat '''$SCANNER_HOME/bin/sonar-scanner \
+                //         -Dsonar.projectKey=$PROJECT_NAME \
+                //         -Dsonar.sources=.'''
+                // }
                 // script {
                 //     timeout(time: 1, unit: 'HOURS') {
                 //         def qg = waitForQualityGate()
@@ -71,10 +71,10 @@ pipeline {
                 // }
             }
         }
-        stage('CD') {
-            steps{
-                echo 'Starting deployment..'
-            }
-        }
+        // stage('CD') {
+        //     steps{
+        //         echo 'Starting deployment..'
+        //     }
+        // }
     }
 }
