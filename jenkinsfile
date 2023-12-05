@@ -63,8 +63,8 @@ pipeline {
                 withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
                     // bat "${SCANNER_HOME}/bin/sonar-scanner.bat"
                     bat """
-                        ${SCANNER_HOME}/bin/sonar-scanner.bat
-                        -Dsonar.projectKey=${PROJECT_NAME}
+                        ${SCANNER_HOME}/bin/sonar-scanner.bat ^
+                        -Dsonar.projectKey=${PROJECT_NAME} ^
                         -Dsonar.sources=.
                     """
                     // bat '''${SCANNER_HOME}/bin/sonar-scanner.bat \
