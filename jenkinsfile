@@ -55,8 +55,7 @@ pipeline {
                 PROJECT_NAME = "spring-boot-angular-postgresql"
             }
             steps {
-                git branch: 'main', url: 'https://github.com/safaziedi/spring-boot-angular-postgresql'
-                // test code with sonarqube
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])                // test code with sonarqube
                 withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
                     sh '''$SCANNER_HOME/bin/sonar-scanner \
                         -Dsonar.projectKey=$PROJECT_NAME \
