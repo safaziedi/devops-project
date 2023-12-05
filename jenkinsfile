@@ -88,9 +88,7 @@ pipeline {
         stage('SonarQube analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
-                    bat """mvn clean package sonar:sonar ^
-                        -Dsonar.sources=back/src ^
-                        -Dsonar.java.binaries=./back ^
+                    bat """mvn -f ./back/pom.xml clean package sonar:sonar ^
                         -Dsonar.host.url=http://localhost:9000"""
                     } 
             }
