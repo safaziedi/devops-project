@@ -49,13 +49,17 @@ pipeline {
     agent any
 
     stages {
-        stage('CI') {
+                        stage('Get Code from Github') {
+                    steps {
+                        checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                    }
+                }
+        stage('Sonar Qube Analysis') {
             environment {
                 SCANNER_HOME = tool 'scanner'
                 PROJECT_NAME = "spring-boot-angular-postgresql"
             }
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])                // test code with sonarqube
                 withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
                     bat '''${SCANNER_HOME}/bin/sonar-scanner.bat \
                         -Dsonar.projectKey=$PROJECT_NAME \
