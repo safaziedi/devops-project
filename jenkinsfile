@@ -67,7 +67,8 @@ pipeline {
                         -Dsonar.sources=back/src ^
                         -Dsonar.java.binaries=./back
                     """
-                                    script {
+                }
+                script {
                     timeout(time: 1, unit: 'HOURS') {
                         def qg = waitForQualityGate()
                         if (qg.status != 'OK') {
@@ -75,8 +76,6 @@ pipeline {
                         }
                     }
                 }
-                }
-
             }
         }
         // stage('CD') {
