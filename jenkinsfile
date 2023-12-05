@@ -1,38 +1,75 @@
+// pipeline {
+//     agent any
+//     environment {
+//                 // SCANNER_HOME = tool 'scanner'
+//                 PROJECT_NAME = "spring-boot-angular-postgresql"
+//     }
+//     stages {
+//         stage('CI') {
+//             stages {
+//                 stage('Get Code from Github') {
+//                     steps {
+//                         checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+//                     }
+//                 }
+
+//                 stage('Sonar Qube Analysis') {
+//                     steps {
+//                         def scannerHome = tool 'scanner';
+//                         withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
+//                             bat "${scannerHome}/bin/sonar-scanner"
+//                         // bat '''$SCANNER_HOME/bin/sonar-scanner \
+//                         // -Dsonar.projectKey=$PROJECT_NAME \
+//                         // -Dsonar.host.url=http://localhost:9000 \
+//                         // -Dsonar.sources=.'''
+//                         }
+//                         // script {
+//                         //     timeout(time: 1, unit: 'HOURS') {
+//                         //     def qg = waitForQualityGate()
+//                         //     if (qg.status != 'OK') {
+//                         //         error "Pipeline aborted due to quality gate failure: ${qg.status}"
+//                         //     }
+//                         //   }
+//                         // }
+//                     }
+//                 }
+//             }
+//         }
+//         stage('CD') {
+//             steps{
+//                 echo 'Starting deployment..'
+//             }
+//         }
+//     }
+// }
+
+
+
 pipeline {
     agent any
-    environment {
-                // SCANNER_HOME = tool 'scanner'
-                PROJECT_NAME = "spring-boot-angular-postgresql"
-    }
+
     stages {
         stage('CI') {
-            stages {
-                stage('Get Code from Github') {
-                    steps {
-                        checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
-                    }
+            environment {
+                SCANNER_HOME = tool 'sonar'
+                PROJECT_NAME = "spring-boot-angular-postgresql"
+            }
+            steps {
+                git branch: 'main', url: 'https://github.com/safaziedi/spring-boot-angular-postgresql'
+                // test code with sonarqube
+                withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectKey=$PROJECT_NAME \
+                        -Dsonar.sources=.'''
                 }
-
-                stage('Sonar Qube Analysis') {
-                    steps {
-                        def scannerHome = tool 'scanner';
-                        withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
-                            bat "${scannerHome}/bin/sonar-scanner"
-                        // bat '''$SCANNER_HOME/bin/sonar-scanner \
-                        // -Dsonar.projectKey=$PROJECT_NAME \
-                        // -Dsonar.host.url=http://localhost:9000 \
-                        // -Dsonar.sources=.'''
-                        }
-                        // script {
-                        //     timeout(time: 1, unit: 'HOURS') {
-                        //     def qg = waitForQualityGate()
-                        //     if (qg.status != 'OK') {
-                        //         error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                        //     }
-                        //   }
-                        // }
-                    }
-                }
+                // script {
+                //     timeout(time: 1, unit: 'HOURS') {
+                //         def qg = waitForQualityGate()
+                //         if (qg.status != 'OK') {
+                //             error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                //         }
+                //     }
+                // }
             }
         }
         stage('CD') {
