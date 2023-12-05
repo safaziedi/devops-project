@@ -10,18 +10,19 @@ pipeline {
         stage('Sonar Qube Analysis') {
             environment {
                 SCANNER_HOME = tool 'scanner'
-                PROJECT_NAME = "spring-boot-angular-postgresql"
+                PROJECT_KEY = "spring-boot-angular-postgresql"
             }
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
                     // equivalent a : // bat """
                     //     ${SCANNER_HOME}/bin/sonar-scanner.bat ^
-                    //     -Dsonar.projectKey=${PROJECT_NAME} ^
+                    //     -Dsonar.projectKey=${PROJECT_KEY} ^
                     //     -Dsonar.sources=back/src ^
                     //     -Dsonar.java.binaries=./back ^
                     //     -Dsonar.host.url=http://localhost:9000
                     // """
                     bat """mvn -f ./back/pom.xml clean package sonar:sonar ^
+                    -Dsonar.projectKey=${PROJECT_KEY} ^
                     -Dsonar.host.url=http://localhost:9000"""
                 }
             }
