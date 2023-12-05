@@ -65,7 +65,8 @@ pipeline {
                         ${SCANNER_HOME}/bin/sonar-scanner.bat ^
                         -Dsonar.projectKey=${PROJECT_NAME} ^
                         -Dsonar.sources=back/src ^
-                        -Dsonar.java.binaries=./back
+                        -Dsonar.java.binaries=./back ^
+                        -Dsonar.host.url=http://localhost:9000
                     """
                 }
             }
