@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-                SCANNER_HOME = tool 'scanner'
+                // SCANNER_HOME = tool 'scanner'
                 PROJECT_NAME = "spring-boot-angular-postgresql"
     }
     stages {
@@ -15,11 +15,13 @@ pipeline {
 
                 stage('Sonar Qube Analysis') {
                     steps {
+                        def scannerHome = tool 'scanner';
                         withSonarQubeEnv(installationName: 'sonarqube', credentialsId: 'sonar2')  {
-                        bat '''$SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectKey=$PROJECT_NAME \
-                        -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.sources=.'''
+                            bat "${scannerHome}/bin/sonar-scanner"
+                        // bat '''$SCANNER_HOME/bin/sonar-scanner \
+                        // -Dsonar.projectKey=$PROJECT_NAME \
+                        // -Dsonar.host.url=http://localhost:9000 \
+                        // -Dsonar.sources=.'''
                         }
                         // script {
                         //     timeout(time: 1, unit: 'HOURS') {
