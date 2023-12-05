@@ -51,7 +51,7 @@ pipeline {
     stages {
         stage('CI') {
             environment {
-                SCANNER_HOME = tool 'sonar'
+                SCANNER_HOME = tool 'scanner'
                 PROJECT_NAME = "spring-boot-angular-postgresql"
             }
             steps {
