@@ -6,6 +6,14 @@ pipeline {
                 steps {
                         checkout scmGit(branches: [[name: '*/release/2.0.0']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
                     }
+        }
+        stage('Build maven'){
+            steps{
+                dir('./front') {
+                    sh 'mpn install'
+                    sh 'npm run build'
                 }
+            }
+        }
     }
 }
