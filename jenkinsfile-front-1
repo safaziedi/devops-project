@@ -17,5 +17,8 @@ pipeline {
                 }
             }
         }
+        stage('Sonar Scanner') {
+            sh 'npm run sonar'
+        }
     }
 }
