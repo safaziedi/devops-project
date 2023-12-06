@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    tools {
+        nodejs 'nodejs-21.0.0'
+    }
     stages {
         stage('Get Code from Github') {
                 steps {
