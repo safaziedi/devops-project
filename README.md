@@ -8,6 +8,8 @@ nexus: http://localhost:8081/
 
 sonarqube : http://localhost:9000/  
 
+## Git flow
+git flow init
 
 ## Run Spring Boot application
 ```
