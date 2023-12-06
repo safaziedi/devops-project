@@ -18,7 +18,11 @@ pipeline {
             }
         }
         stage('Sonar Scanner') {
-            sh 'npm run sonar'
+            steps{
+                dir('./front') {
+                    sh 'npm run sonar'
+                }
+            }
         }
     }
 }
