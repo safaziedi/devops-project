@@ -1,0 +1,11 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Get Code from Github') {
+                steps {
+                        checkout scmGit(branches: [[name: '*/release/2.0.0']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                    }
+                }
+    }
+}
