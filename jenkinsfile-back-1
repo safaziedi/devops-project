@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'maven_3.9.5'
+    }
     stages {
         stage('Get Code from Github') {
                 steps {
@@ -11,7 +13,7 @@ pipeline {
         stage('Build maven'){
             steps{
                 dir('./back') {
-                    bat 'mvn clean package'
+                    sh 'mvn clean package'
                 }
             }
         }
