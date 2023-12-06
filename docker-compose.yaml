@@ -1,5 +1,21 @@
 version: "1"
 services:
+  postgres:
+    image: postgres:latest
+    networks:
+      - devops-project-network
+    container_name: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    expose:
+    - 5432
+    ports:
+      - 5432:5432
+    environment:
+         - POSTGRES_PASSWORD=8458
+         - POSTGRES_USER=postgres
+         - POSTGRES_DB=testdb
+    restart: unless-stopped
   nexus:
     image: sonatype/nexus3:latest
     container_name: nexus
@@ -29,6 +45,10 @@ services:
     networks:
       - devops-project-network
     restart: unless-stopped
+    depends_on:
+      - postgres
+    links:
+      - postgres
   
   sonar:
     image: sonarqube:10.3-community
@@ -39,10 +59,10 @@ services:
     #   - testdb
     # links:
     #   - testdb
-    environment:
-      - SONARQUBE_JDBC_URL=jdbc:postgresql://localhost/testdb
-      - SONARQUBE_JDBC_USERNAME=postgres
-      - SONARQUBE_JDBC_PASSWORD=8458
+    # environment:
+    #   - SONARQUBE_JDBC_URL=jdbc:postgresql://localhost:5432/testdb
+    #   - SONARQUBE_JDBC_USERNAME=postgres
+    #   - SONARQUBE_JDBC_PASSWORD=8458
     volumes:
       - sonar_home:/var/lib/sonar
     networks:
@@ -53,6 +73,7 @@ volumes:
   nexus-data:
   jenkins_home:
   sonar_home:
+  postgres-data:
 
 networks:
   devops-project-network:
