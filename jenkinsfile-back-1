@@ -27,7 +27,7 @@ pipeline {
                         //                    sh '''$SCANNER_HOME/bin/sonar-scanner \
                         //-Dsonar.projectKey=$PROJECT_NAME \
                         //-Dsonar.sources=.'''
-                        sh 'mvn clean install  sonar:sonar -Dsonar.login=squ_e4a07d419703403508c9deded7e556de9a50c734'
+                        sh 'mvn sonar:sonar -Dsonar.login=squ_e4a07d419703403508c9deded7e556de9a50c734'
                     }
                 }
             }
