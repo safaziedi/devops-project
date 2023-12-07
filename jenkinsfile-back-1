@@ -4,7 +4,7 @@ pipeline {
         maven 'maven_3.9.5'
     }
     stages {
-        stage('Get Code from Github') {
+        stage('Get Code from Github & clean workspace before build') {
                 steps {
                     // Clean before build
                     cleanWs()
@@ -16,21 +16,14 @@ pipeline {
         stage('Build maven'){
             steps{
                 dir('./back') {
-                    // // Clean before build
-                    // cleanWs()
-                    // // We need to explicitly checkout from SCM here
-                    // checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
                     sh 'mvn clean package'
                 }
             }
         }
         stage('Sonar Qube Analysis') {
-            environment {
-                PROJECT_KEY = "spring-boot-postgresql"
-            }
             steps {
                 dir('./back') {
-                    withSonarQubeEnv('sonar'){
+                    withSonarQubeEnv(installationName: 'sonar', credentialsId: 'sonar2'){
                         sh 'mvn sonar:sonar'
                     }
                 }
