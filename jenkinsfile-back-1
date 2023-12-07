@@ -29,7 +29,7 @@ pipeline {
                         // //-Dsonar.sources=.'''
                         // sh 'mvn sonar:sonar -Dsonar.login=squ_e4a07d419703403508c9deded7e556de9a50c734'
                          sh '''mvn sonar:sonar \
-                            -Dsonar.login=squ_e4a07d419703403508c9deded7e556de9a50c734'''
+                            -Dsonar.token=squ_e4a07d419703403508c9deded7e556de9a50c734'''
                     }
                 }
             }
