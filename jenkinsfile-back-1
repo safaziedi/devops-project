@@ -17,5 +17,15 @@ pipeline {
                 }
             }
         }
+        stage('Sonar Qube Analysis') {
+            environment {
+                PROJECT_KEY = "spring-boot-postgresql"
+            }
+            steps {
+                dir('./back') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
     }
 }
