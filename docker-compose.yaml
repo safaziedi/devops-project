@@ -41,15 +41,18 @@ services:
       - NEXUS_PASSWORD=admin123
       - NEXUS_URL=http://nexus:8081
       - SONARQUBE_HOST=http://sonar:9000  # Use the service name as the hostname
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://postgres:5432/testdb
+      - SONARQUBE_JDBC_USERNAME=postgres
+      - SONARQUBE_JDBC_PASSWORD=8458
     volumes:
       - jenkins_home:/var/jenkins_home
     networks:
       - devops-project-network
     restart: unless-stopped
     depends_on:
-      - postgres
+      - "postgres"
     links:
-      - postgres
+      - "postgres"
 
   
   sonar:
