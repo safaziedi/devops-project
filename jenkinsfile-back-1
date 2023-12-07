@@ -6,17 +6,20 @@ pipeline {
     stages {
         stage('Get Code from Github') {
                 steps {
-                        checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                    // Clean before build
+                    cleanWs()
+                    // We need to explicitly checkout from SCM here
+                    checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
                 }
         }
 
         stage('Build maven'){
             steps{
                 dir('./back') {
-                    // Clean before build
-                    cleanWs()
-                    // We need to explicitly checkout from SCM here
-                    checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                    // // Clean before build
+                    // cleanWs()
+                    // // We need to explicitly checkout from SCM here
+                    // checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
                     sh 'mvn clean package'
                 }
             }
