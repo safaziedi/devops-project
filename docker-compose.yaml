@@ -50,9 +50,9 @@ services:
       - devops-project-network
     restart: unless-stopped
     depends_on:
-      - postgres
+      - "postgres"
     links:
-      - postgres
+      - "postgres"
 
   
   sonar:
