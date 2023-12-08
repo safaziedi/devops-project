@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         maven 'maven_3.9.5'
-        docker 'dockerTool'
+        dockerTool 'docker'
     }
     stages {
         stage('Get Code from Github & clean workspace') {
