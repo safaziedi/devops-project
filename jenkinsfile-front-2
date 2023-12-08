@@ -31,9 +31,9 @@ pipeline {
         stage('Push To Nexus') {
             steps {
                 dir('./front') {
-                withCredentials([file(credentialsId: 'mynpm-cred2', variable: 'mynpmrcccc')]) {
+                withCredentials([file(credentialsId: 'mynpm-cred', variable: 'mynpmrc')]) {
                     script{
-                        sh "npm publish --userconfig ${mynpmrcccc} --loglevel verbose"
+                        sh "npm publish --userconfig ${mynpmrc} --loglevel verbose"
                     }
                 }
             }

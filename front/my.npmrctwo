@@ -1,4 +1,0 @@
-fetch-retry-mintimeout=20000
-fetch-retry-maxtimeout=120000
-legacy-peer-deps=true
-//nexus:8081/repository/angular-15-crud-2/:_authToken=NpmToken.0d19a170-4abe-3208-8dac-91c6c9319bce
