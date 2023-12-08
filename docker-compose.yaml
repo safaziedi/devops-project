@@ -46,6 +46,7 @@ services:
       - SONARQUBE_JDBC_PASSWORD=8458
     volumes:
       - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - devops-project-network
     restart: unless-stopped
