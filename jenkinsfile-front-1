@@ -27,12 +27,12 @@ pipeline {
             }
         }
 
-        stage('Upload dist To Nexus') {
+        stage('Push To Nexus') {
             steps {
                 dir('./front') {
                 withCredentials([file(credentialsId: 'mynpm-cred', variable: 'mynpmrc')]) {
                     script{
-                        sh "npm publish --userconfig $mynpmrc --registry http://nexus:8081/repository/angular-15-crud/ --loglevel verbose"
+                        sh "npm publish --userconfig $mynpmrc --loglevel verbose"
                     }
                 }
             }
