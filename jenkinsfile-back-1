@@ -17,7 +17,7 @@ pipeline {
             steps{
                 dir('./back') {
                     sh 'mvn clean package'
-                    archiveArtifacts artifacts: 'target/*.war', onlyIfSuccessful: true
+                    archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
                 }
             }
         }
