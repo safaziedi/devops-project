@@ -36,7 +36,7 @@ pipeline {
                 // }
                 withCredentials([file(credentialsId: 'mynpm-cred', variable: 'my-npmrc')]) {
                     script{
-                        sh "npm install --user-config ${my-npmrc} --registry http://nexus:8081/repository/angular-15-crud/ --loglevel verbose"
+                        sh "npm install --userconfig ${my-npmrc} --registry http://nexus:8081/repository/angular-15-crud/ --loglevel verbose"
                     }
                 }
             }
