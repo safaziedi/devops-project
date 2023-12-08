@@ -39,7 +39,7 @@ pipeline {
                         [
                             artifactId: 'spring-boot-jpa-postgresql', 
                             classifier: '', 
-                            file: 'target/spring-boot-jpa-postgresql-0.0.1-SNAPSHOT.jar', 
+                            file: 'target/spring-boot-jpa-postgresql-0.0.1.jar', 
                             type: 'jar'
                         ]
                         ], 
@@ -49,7 +49,7 @@ pipeline {
                         nexusVersion: 'nexus3', 
                         protocol: 'http', 
                         repository: 'spring-boot-jpa-postgresql', 
-                        version: '0.0.1-SNAPSHOT'
+                        version: '0.0.1'
                 }
             }
             }
