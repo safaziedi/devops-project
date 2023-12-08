@@ -31,9 +31,9 @@ pipeline {
         stage('Push To Nexus') {
             steps {
                 dir('./front') {
-                withCredentials([file(credentialsId: 'mynpm-cred2', variable: 'mynpmrc2')]) {
+                withCredentials([file(credentialsId: 'mynpm-cred2', variable: 'mynpmrcccc')]) {
                     script{
-                        sh "npm publish --userconfig ${mynpmrc2} --registry http://nexus:8081/repository/angular-15-crud-2/ --loglevel verbose"
+                        sh "npm publish --userconfig ${mynpmrcccc} --loglevel verbose"
                     }
                 }
             }
