@@ -9,6 +9,9 @@
     "test": "ng test",
     "sonar": "sonar-scanner"
   },
+  "publishConfig": {
+    "registry": "http://nexus:8081/repository/angular-15-crud/"
+  },
   "dependencies": {
     "@angular/animations": "^15.0.0",
     "@angular/common": "^15.0.0",
