@@ -4,7 +4,7 @@ pipeline {
         maven 'maven_3.9.5'
     }
     stages {
-        stage('Get Code from Github & clean workspace before build') {
+        stage('Get Code from Github & clean workspace') {
                 steps {
                     // Clean before build
                     cleanWs()

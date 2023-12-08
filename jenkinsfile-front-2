@@ -1,11 +1,43 @@
 pipeline {
     agent any
-
+    tools {
+        nodejs 'nodejs-21.0.0'
+    }
     stages {
-        stage('Get Code from Github') {
+        stage('Get Code from Github & clean workspace') {
                 steps {
+                        cleanWs()
                         checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
                     }
+        }
+        
+        stage('Build Angular'){
+            steps{
+                dir('./front') {
+                    sh 'npm install'
+                    sh 'npm run build'
                 }
+            }
+        }
+
+        stage('Sonar Scanner') {
+            steps{
+                dir('./front') {
+                    sh 'npm run sonar'
+                }
+            }
+        }
+
+        stage('Push To Nexus') {
+            steps {
+                dir('./front') {
+                withCredentials([file(credentialsId: 'mynpm-cred', variable: 'mynpmrc')]) {
+                    script{
+                        sh "npm publish --userconfig ${mynpmrc} --loglevel verbose"
+                    }
+                }
+            }
+            }
+        }
     }
 }

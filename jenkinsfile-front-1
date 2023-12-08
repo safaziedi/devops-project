@@ -4,7 +4,7 @@ pipeline {
         nodejs 'nodejs-21.0.0'
     }
     stages {
-        stage('Get Code from Github') {
+        stage('Get Code from Github & clean workspace') {
                 steps {
                         cleanWs()
                         checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])

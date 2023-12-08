@@ -1,11 +1,58 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'maven_3.9.5'
+    }
     stages {
-        stage('Get Code from Github') {
+        stage('Get Code from Github & clean workspace') {
                 steps {
-                        checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                    // Clean before build
+                    cleanWs()
+                    // We need to explicitly checkout from SCM here
+                    checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                }
+        }
+
+        stage('Build maven'){
+            steps{
+                dir('./back') {
+                    sh 'mvn clean package'
+                    archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
+                }
+            }
+        }
+        stage('Sonar Qube Analysis') {
+            steps {
+                dir('./back') {
+                    withSonarQubeEnv('sonar'){
+                        sh 'mvn sonar:sonar'
                     }
                 }
+            }
+        }
+
+        stage('Upload jar To Nexus') {
+            steps {
+                dir('./back') {
+                script {
+                    nexusArtifactUploader artifacts: [
+                        [
+                            artifactId: 'spring-boot-jpa-postgresql', 
+                            classifier: '', 
+                            file: 'target/spring-boot-jpa-postgresql-0.0.1.jar', 
+                            type: 'jar'
+                        ]
+                        ], 
+                        credentialsId: 'nexus', 
+                        groupId: 'bezkoder', 
+                        nexusUrl: 'nexus:8081', 
+                        nexusVersion: 'nexus3', 
+                        protocol: 'http', 
+                        repository: 'spring-boot-jpa-postgresql', 
+                        version: '0.0.1'
+                }
+            }
+            }
+        }
     }
 }
