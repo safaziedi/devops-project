@@ -26,5 +26,15 @@ pipeline {
                 }
             }
         }
+
+        stage('Upload dist To Nexus') {
+            steps {
+                dir('./front') {
+                script {
+                    sh "npm publish http://nexus:8081/repository/angular-15-crud/"
+                }
+            }
+            }
+        }
     }
 }
