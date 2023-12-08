@@ -6,6 +6,7 @@ pipeline {
     stages {
         stage('Get Code from Github') {
                 steps {
+                        cleanWs()
                         checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
                     }
         }
