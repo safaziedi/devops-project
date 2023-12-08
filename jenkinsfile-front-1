@@ -30,8 +30,14 @@ pipeline {
         stage('Upload dist To Nexus') {
             steps {
                 dir('./front') {
-                script {
-                    sh "npm publish http://nexus:8081/repository/angular-15-crud/"
+                // script {
+                //    // sh "npm publish http://nexus:8081/repository/angular-15-crud/"
+
+                // }
+                withCredentials([file(credentialsId: 'mynpm-cred', variable: 'my-npmrc')]) {
+                    script{
+                        sh "npm install --user-config ${my-npmrc} --registry http://nexus:8081/repository/angular-15-crud/ --loglevel verbose"
+                    }
                 }
             }
             }
