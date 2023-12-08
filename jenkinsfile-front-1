@@ -34,9 +34,9 @@ pipeline {
                 //    // sh "npm publish http://nexus:8081/repository/angular-15-crud/"
 
                 // }
-                withCredentials([file(credentialsId: 'mynpm-cred', variable: 'my-npmrc')]) {
+                withCredentials([file(credentialsId: 'mynpm-cred', variable: 'mynpmrc')]) {
                     script{
-                        sh "npm install --userconfig ${my-npmrc} --registry http://nexus:8081/repository/angular-15-crud/ --loglevel verbose"
+                        sh "npm install --userconfig $mynpmrc --registry http://nexus:8081/repository/angular-15-crud/ --loglevel verbose"
                     }
                 }
             }
