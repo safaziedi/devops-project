@@ -10,7 +10,7 @@
     "sonar": "sonar-scanner"
   },
   "publishConfig": {
-    "registry": "http://nexus:8081/repository/angular-15-crud/"
+    "registry": "http://nexus:8081/repository/angular-15-crud-2/"
   },
   "dependencies": {
     "@angular/animations": "^15.0.0",
