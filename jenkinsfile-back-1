@@ -30,5 +30,29 @@ pipeline {
                 }
             }
         }
+
+        stage('Upload jar To Nexus') {
+            steps {
+                dir('./back') {
+                script {
+                    nexusArtifactUploader artifacts: [
+                        [
+                            artifactId: 'spring-boot-jpa-postgresql', 
+                            classifier: '', 
+                            file: 'target/backend-0.0.1-SNAPSHOT.jar', 
+                            type: 'jar'
+                        ]
+                        ], 
+                        credentialsId: 'nexus', 
+                        groupId: 'bezkoder', 
+                        nexusUrl: 'nexus:8081/repository/backend/', 
+                        nexusVersion: 'nexus3', 
+                        protocol: 'http', 
+                        repository: 'http://nexus:8081/repository/backend/', 
+                        version: '0.0.1-SNAPSHOT'
+                }
+            }
+            }
+        }
     }
 }
