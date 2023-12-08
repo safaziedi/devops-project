@@ -48,7 +48,7 @@ pipeline {
                         nexusUrl: 'nexus:8081/repository/spring-boot-jpa-postgresql/', 
                         nexusVersion: 'nexus3', 
                         protocol: 'http', 
-                        repository: 'http://nexus:8081/repository/spring-boot-jpa-postgresql/', 
+                        repository: 'spring-boot-jpa-postgresql', 
                         version: '0.0.1-SNAPSHOT'
                 }
             }
