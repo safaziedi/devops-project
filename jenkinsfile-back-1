@@ -4,6 +4,10 @@ pipeline {
         maven 'maven_3.9.5'
     }
     stages {
+         stage('Initialize'){
+        def dockerHome = tool 'myDocker'
+        env.PATH = "${dockerHome}/bin:${env.PATH}"
+    }
         stage('Get Code from Github & clean workspace') {
                 steps {
                     // Clean before build
