@@ -54,5 +54,26 @@ pipeline {
             }
             }
         }
+
+        stage('Create docker image'){
+            steps{
+                dir('./back') {
+                script{
+                    sh 'docker build -t ziadisafa/spring-boot-jpa-postgresql-0.0.1 .'
+                }
+                }
+            }
+        }
+        stage('Push docker image to docker hub'){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
+                         sh "docker login -u ziadisafa -p ${dockerhubpwd}"
+                         sh 'docker push ziadisafa/spring-boot-jpa-postgresql-0.0.1'
+                    }
+                    
+                }
+            }
+        }
     }
 }
