@@ -4,6 +4,9 @@ pipeline {
         maven 'maven_3.9.5'
         dockerTool 'docker'
     }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhubpwdForjenkins')
+    }
     stages {
         stage('Get Code from Github & clean workspace') {
                 steps {
@@ -60,21 +63,19 @@ pipeline {
             steps{
                 dir('./back') {
                 script{
-                    sh 'docker build -t ziadisafa/spring-boot-jpa-postgresql-0.0.1 .'
+                    sh 'docker build -t ziadisafa/spring-boot-jpa-postgresql:0.0.1 .'
                 }
                 }
             }
         }
-        // stage('Push to docker hub'){
-        //     steps{
-        //         script{
-        //             withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
-        //                  sh "docker login -u ziadisafa -p ${dockerhubpwd}"
-        //                  sh 'docker push ziadisafa/spring-boot-jpa-postgresql-0.0.1'
-        //             }
+        stage('Push to docker hub'){
+            steps{
+                script{
+                    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
                     
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
     }
 }
