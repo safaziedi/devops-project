@@ -31,14 +31,14 @@ pipeline {
         stage('Push To Nexus') {
             steps {
                 dir('./front') {
-                // withCredentials([file(credentialsId: 'mynpm-cred', variable: 'mynpmrc')]) {
-                //     script{
-                //         sh "npm publish --userconfig ${mynpmrc} --loglevel verbose"
-                //     }
-                // }
+                withCredentials([file(credentialsId: 'nexus', variable: 'nexus')]) {
                     script{
-                        sh "npm publish --loglevel verbose"
+                        sh "npm publish --userconfig ${nexus} --loglevel verbose"
                     }
+                }
+                    // script{
+                    //     sh "npm publish --loglevel verbose"
+                    // }
             }
             }
         }
