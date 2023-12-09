@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         nodejs 'nodejs-21.0.0'
+        dockerTool 'docker'
     }
     stages {
         stage('Get Code from Github & clean workspace') {
