@@ -18,19 +18,19 @@ pipeline {
             steps{
                 dir('./back') {
                     sh 'mvn clean package'
-                    // archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
+                     archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
                 }
             }
         }
-        // stage('Sonar Qube Analysis') {
-        //     steps {
-        //         dir('./back') {
-        //             withSonarQubeEnv('sonar'){
-        //                 sh 'mvn sonar:sonar'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Sonar Qube Analysis') {
+            steps {
+                dir('./back') {
+                    withSonarQubeEnv('sonar'){
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
 
         // stage('Upload jar To Nexus') {
         //     steps {
