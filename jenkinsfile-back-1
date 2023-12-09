@@ -71,7 +71,7 @@ pipeline {
         stage('Push to docker hub'){
             steps{
                 script{
-                    sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ziadisafa --password-stdin"
+                    sh 'docker login -u ziadisafa --password safaziadi07012001'
                     sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
                     
                 }
