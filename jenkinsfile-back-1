@@ -18,7 +18,7 @@ pipeline {
             steps{
                 dir('./back') {
                     sh 'mvn clean package'
-                    archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
+                    // archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
                 }
             }
         }
@@ -65,16 +65,16 @@ pipeline {
                 }
             }
         }
-        stage('Push to docker hub'){
-            steps{
-                script{
-                    withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
-                         sh "docker login -u ziadisafa -p ${dockerhubpwd}"
-                         sh 'docker push ziadisafa/spring-boot-jpa-postgresql-0.0.1'
-                    }
+        // stage('Push to docker hub'){
+        //     steps{
+        //         script{
+        //             withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
+        //                  sh "docker login -u ziadisafa -p ${dockerhubpwd}"
+        //                  sh 'docker push ziadisafa/spring-boot-jpa-postgresql-0.0.1'
+        //             }
                     
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
     }
 }
