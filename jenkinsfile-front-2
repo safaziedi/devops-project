@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         nodejs 'nodejs-21.0.0'
+        dockerTool 'docker'
     }
     stages {
         stage('Get Code from Github & clean workspace') {
@@ -37,6 +38,24 @@ pipeline {
                     }
                 }
             }
+            }
+        }
+        stage('Create docker image'){
+            steps{
+                dir('./front') {
+                script{
+                    sh 'docker build -t ziadisafa/angular-15-crud:1.0.0 .'
+                }
+                }
+            }
+        }
+        stage('Push to docker hub'){
+            steps{
+                script{
+                    sh 'docker login -u ziadisafa --password safaziadi07012001'
+                    sh 'docker push ziadisafa/angular-15-crud:1.0.0'
+                    
+                }
             }
         }
     }

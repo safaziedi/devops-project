@@ -2,6 +2,10 @@ pipeline {
     agent any
     tools {
         maven 'maven_3.9.5'
+        dockerTool 'docker'
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhubpwdForjenkins')
     }
     stages {
         stage('Get Code from Github & clean workspace') {
@@ -17,7 +21,7 @@ pipeline {
             steps{
                 dir('./back') {
                     sh 'mvn clean package'
-                    archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
+                     archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
                 }
             }
         }
@@ -52,6 +56,25 @@ pipeline {
                         version: '0.0.1'
                 }
             }
+            }
+        }
+
+        stage('Create docker image'){
+            steps{
+                dir('./back') {
+                script{
+                    sh 'docker build -t ziadisafa/spring-boot-jpa-postgresql:0.0.1 .'
+                }
+                }
+            }
+        }
+        stage('Push to docker hub'){
+            steps{
+                script{
+                    sh 'docker login -u ziadisafa --password safaziadi07012001'
+                    sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
+                    
+                }
             }
         }
     }
