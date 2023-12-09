@@ -82,7 +82,7 @@ pipeline {
             steps {
                 dir('./back') {
                 script {
-                    kubernetesDeploy(configs: "deploymentbackend.yaml", kubeconfigId: "kubernetes")
+                    kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
                     }
                 }
             }
