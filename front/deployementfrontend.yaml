@@ -17,18 +17,31 @@ spec:
           image: ziadisafa/angular-15-crud:1.0.0
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 4200
-
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: front-svc
+    name: front-svc
 spec:
+  type: LoadBalancer
   selector:
     app: front
   ports:
     - protocol: "TCP"
-      port: 4200 # The port that the service is running on in the cluster
-      targetPort: 4200 # The port exposed by the service
-  type: NodePort # type of the service.
+      port: 80 # The port that the service is running on in the cluster
+      targetPort: 80 # The port exposed by the service
+      nodePort: 31110
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: front-svc
+# spec:
+#   selector:
+#     app: front
+#   ports:
+#     - protocol: "TCP"
+#       port: 80 # The port that the service is running on in the cluster
+#       targetPort: 80 # The port exposed by the service
+#   type: NodePort # type of the service.
