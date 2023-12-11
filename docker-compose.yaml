@@ -36,6 +36,7 @@ services:
     container_name: jenkins
     environment:
       - DOCKER_HOST=tcp://host.docker.internal:2375
+      - DB_HOST: postgres
     user: root
     ports:
       - "8080:8080"
