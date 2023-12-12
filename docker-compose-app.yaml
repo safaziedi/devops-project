@@ -12,6 +12,8 @@ services:
             - SPRING_DATASOURCE_USERNAME=postgres
             - SPRING_DATASOURCE_PASSWORD=8458
             - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+        networks:
+            - devops-project-network
           
     postgres:
         image: 'postgres:13.1-alpine'
@@ -24,6 +26,10 @@ services:
             - 5432
         ports:
             - "5432:5432"
+        networks:
+            - devops-project-network
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
 
     frontend:
         image: ziadisafa/angular-15-crud:1.0.0
@@ -32,3 +38,11 @@ services:
             - "4200:80"
         depends_on:
             - backend
+        networks:
+            - devops-project-network
+
+volumes:
+  postgres-data:
+
+networks:
+  devops-project-network:
