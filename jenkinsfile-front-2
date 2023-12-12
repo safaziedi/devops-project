@@ -59,4 +59,13 @@ pipeline {
             }
         }
     }
+
+    post {
+    success {
+      slackSend color: '#36a64f', message: "Deployment of frontend with docker-compose succeeded!"
+    }
+    failure {
+      slackSend color: '#ff0000', message: "Deployment of frontend with docker-compose failed!"
+    }
+  }
 }
