@@ -8,80 +8,80 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhubpwdForjenkins')
     }
     stages {
-    //     stage('Get Code from Github & clean workspace') {
-    //             steps {
-    //                 // Clean before build
-    //                 cleanWs()
-    //                 // We need to explicitly checkout from SCM here
-    //                 checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
-    //             }
-    //     }
+        stage('Get Code from Github & clean workspace') {
+                steps {
+                    // Clean before build
+                    cleanWs()
+                    // We need to explicitly checkout from SCM here
+                    checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                }
+        }
 
-    //     stage('Build maven'){
-    //         steps{
-    //             dir('./back') {
-    //                 sh 'mvn clean package'
-    //                  archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
-    //             }
-    //         }
-    //     }
-    //     stage('Sonar Qube Analysis') {
-    //         steps {
-    //             dir('./back') {
-    //                 withSonarQubeEnv('sonar'){
-    //                     sh 'mvn sonar:sonar'
-    //                 }
-    //             }
-    //         }
-    //     }
+        stage('Build maven'){
+            steps{
+                dir('./back') {
+                    sh 'mvn clean package'
+                     archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
+                }
+            }
+        }
+        stage('Sonar Qube Analysis') {
+            steps {
+                dir('./back') {
+                    withSonarQubeEnv('sonar'){
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
 
-    //     stage('Upload jar To Nexus') {
-    //         steps {
-    //             dir('./back') {
-    //             script {
-    //                 nexusArtifactUploader artifacts: [
-    //                     [
-    //                         artifactId: 'spring-boot-jpa-postgresql', 
-    //                         classifier: '', 
-    //                         file: 'target/spring-boot-jpa-postgresql-0.0.1.jar', 
-    //                         type: 'jar'
-    //                     ]
-    //                     ], 
-    //                     credentialsId: 'nexus', 
-    //                     groupId: 'bezkoder', 
-    //                     nexusUrl: 'nexus:8081', 
-    //                     nexusVersion: 'nexus3', 
-    //                     protocol: 'http', 
-    //                     repository: 'spring-boot-jpa-postgresql', 
-    //                     version: '0.0.1'
-    //             }
-    //         }
-    //         }
-    //     }
+        stage('Upload jar To Nexus') {
+            steps {
+                dir('./back') {
+                script {
+                    nexusArtifactUploader artifacts: [
+                        [
+                            artifactId: 'spring-boot-jpa-postgresql', 
+                            classifier: '', 
+                            file: 'target/spring-boot-jpa-postgresql-0.0.1.jar', 
+                            type: 'jar'
+                        ]
+                        ], 
+                        credentialsId: 'nexus', 
+                        groupId: 'bezkoder', 
+                        nexusUrl: 'nexus:8081', 
+                        nexusVersion: 'nexus3', 
+                        protocol: 'http', 
+                        repository: 'spring-boot-jpa-postgresql', 
+                        version: '0.0.1'
+                }
+            }
+            }
+        }
 
-    //     stage('Create docker image'){
-    //         steps{
-    //             dir('./back') {
-    //             script{
-    //                 sh 'docker build -t ziadisafa/spring-boot-jpa-postgresql:0.0.1 .'
-    //             }
-    //             }
-    //         }
-    //     }
-    //     stage('Push to docker hub'){
-    //         steps{
-    //             script{
-    //                 sh 'docker login -u ziadisafa --password safaziadi07012001'
-    //                 sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
+        stage('Create docker image'){
+            steps{
+                dir('./back') {
+                script{
+                    sh 'docker build -t ziadisafa/spring-boot-jpa-postgresql:0.0.1 .'
+                }
+                }
+            }
+        }
+        stage('Push to docker hub'){
+            steps{
+                script{
+                    sh 'docker login -u ziadisafa --password safaziadi07012001'
+                    sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
                     
-    //             }
-    //         }
-    //     }
+                }
+            }
+        }
         stage('Docker compose'){
             steps{
                 script{
-                    // sh 'docker-compose -f docker-compose-app.yaml up -d'
-                    sh 'docker-compose version'
+                    // sh 'docker-compose version'
+                    sh 'docker-compose -f docker-compose-app.yaml up -d'
                 }
             }
         }
