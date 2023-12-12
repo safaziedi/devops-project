@@ -1,3 +1,6 @@
+## slack notification 
+https://app.slack.com/client/T069JKP1Q1L/C069ANYQ079
+
 ## K8s
 frontend : http://localhost:80
 backend : http://localhost:8091 

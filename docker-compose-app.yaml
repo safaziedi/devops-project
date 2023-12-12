@@ -6,7 +6,7 @@ services:
         ports:
             - "8091:8091"
         depends_on:
-            - postgres
+            - postgres2
         environment:
             - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/testdb
             - SPRING_DATASOURCE_USERNAME=postgres
@@ -15,9 +15,9 @@ services:
         networks:
             - devops-project-network
           
-    postgres:
+    postgres2:
         image: 'postgres:13.1-alpine'
-        container_name: postgres
+        container_name: postgres2
         environment:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=8458
@@ -29,7 +29,7 @@ services:
         networks:
             - devops-project-network
         volumes:
-            - postgres-data:/var/lib/postgresql/data
+            - postgres2-data:/var/lib/postgresql/data
 
     frontend:
         image: ziadisafa/angular-15-crud:1.0.0
@@ -42,7 +42,7 @@ services:
             - devops-project-network
 
 volumes:
-  postgres-data:
+  postgres2-data:
 
 networks:
   devops-project-network:
