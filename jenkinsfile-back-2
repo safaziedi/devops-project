@@ -80,7 +80,8 @@ pipeline {
         stage('Docker compose'){
             steps{
                 script{
-                    sh 'docker-compose -f docker-compose-app.yaml up -d'
+                    // sh 'docker-compose -f docker-compose-app.yaml up -d'
+                    sh 'docker compose version'
                 }
             }
         }
