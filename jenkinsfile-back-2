@@ -81,7 +81,7 @@ pipeline {
             steps{
                 script{
                     // sh 'docker-compose version'
-                    sh 'docker rm postgres'
+                    sh 'docker rm -f postgres'
                     sh 'docker-compose -f docker-compose-app.yaml up -d'
                 }
             }
