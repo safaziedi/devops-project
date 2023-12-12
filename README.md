@@ -2,8 +2,12 @@
 frontend : http://localhost:80
 backend : http://localhost:8091 
 
-
 ## Docker Compose
+docker-compose -f .\docker-compose-app.yaml up
+frontend : http://localhost:4200
+backend : http://localhost:8092 
+
+## Docker Compose for jenkins + nexus + sonar
 docker-compose up
 
 credentials:
