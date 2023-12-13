@@ -25,68 +25,68 @@ pipeline {
                 }
             }
         }
-        // stage('Sonar Qube Analysis') {
-        //     steps {
-        //         dir('./back') {
-        //             withSonarQubeEnv('sonar'){
-        //                 sh 'mvn sonar:sonar'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Sonar Qube Analysis') {
+            steps {
+                dir('./back') {
+                    withSonarQubeEnv('sonar'){
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
 
-        // stage('Upload jar To Nexus') {
-        //     steps {
-        //         dir('./back') {
-        //         script {
-        //             nexusArtifactUploader artifacts: [
-        //                 [
-        //                     artifactId: 'spring-boot-jpa-postgresql', 
-        //                     classifier: '', 
-        //                     file: 'target/spring-boot-jpa-postgresql-0.0.1.jar', 
-        //                     type: 'jar'
-        //                 ]
-        //                 ], 
-        //                 credentialsId: 'nexus', 
-        //                 groupId: 'bezkoder', 
-        //                 nexusUrl: 'nexus:8081', 
-        //                 nexusVersion: 'nexus3', 
-        //                 protocol: 'http', 
-        //                 repository: 'spring-boot-jpa-postgresql', 
-        //                 version: '0.0.1'
-        //         }
-        //     }
-        //     }
-        // }
+        stage('Upload jar To Nexus') {
+            steps {
+                dir('./back') {
+                script {
+                    nexusArtifactUploader artifacts: [
+                        [
+                            artifactId: 'spring-boot-jpa-postgresql', 
+                            classifier: '', 
+                            file: 'target/spring-boot-jpa-postgresql-0.0.1.jar', 
+                            type: 'jar'
+                        ]
+                        ], 
+                        credentialsId: 'nexus', 
+                        groupId: 'bezkoder', 
+                        nexusUrl: 'nexus:8081', 
+                        nexusVersion: 'nexus3', 
+                        protocol: 'http', 
+                        repository: 'spring-boot-jpa-postgresql', 
+                        version: '0.0.1'
+                }
+            }
+            }
+        }
 
-        // stage('Create docker image'){
-        //     steps{
-        //         dir('./back') {
-        //         script{
-        //             sh 'docker build -t ziadisafa/spring-boot-jpa-postgresql:0.0.1 .'
-        //         }
-        //         }
-        //     }
-        // }
-        // stage('Push to docker hub'){
-        //     steps{
-        //         script{
-        //             sh 'docker login -u ziadisafa --password safaziadi07012001'
-        //             sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
+        stage('Create docker image'){
+            steps{
+                dir('./back') {
+                script{
+                    sh 'docker build -t ziadisafa/spring-boot-jpa-postgresql:0.0.1 .'
+                }
+                }
+            }
+        }
+        stage('Push to docker hub'){
+            steps{
+                script{
+                    sh 'docker login -u ziadisafa --password safaziadi07012001'
+                    sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
                     
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
 
-        // stage('Deploy to K8s') {
-        //     steps {
-        //         dir('./back') {
-        //         script {
-        //             kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploy to K8s') {
+            steps {
+                dir('./back') {
+                script {
+                    kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
+                    }
+                }
+            }
+        }
     }
 
     post {
