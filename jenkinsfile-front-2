@@ -58,6 +58,13 @@ pipeline {
                 }
             }
         }
+        stage('Docker compose'){
+            steps{
+                script{
+                    sh 'docker-compose -f docker-compose-app.yaml up -d'
+                }
+            }
+        }
     }
 
     post {
