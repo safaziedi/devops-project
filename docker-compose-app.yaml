@@ -12,8 +12,9 @@ services:
             - SPRING_DATASOURCE_USERNAME=postgres
             - SPRING_DATASOURCE_PASSWORD=8458
             - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-        networks:
-            - devops-project-network-2
+        # networks:
+        #     - devops-project-network-2
+        network_mode: host
           
     # postgres:
     #     image: 'postgres:13.1-alpine'
@@ -42,6 +43,6 @@ services:
 # volumes:
 #   postgres-data:
 
-networks:
-  devops-project-network-2:
-      driver: host
+# networks:
+#   devops-project-network-2:
+#       driver: host
