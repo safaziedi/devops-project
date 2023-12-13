@@ -1,4 +1,4 @@
-version: "1"
+version: "2"
 services:
     backend:
         image: ziadisafa/spring-boot-jpa-postgresql:0.0.1
@@ -41,8 +41,8 @@ services:
         networks:
             - devops-project-network
 
-volumes:
-  postgres-data:
+# volumes:
+#   postgres-data:
 
 networks:
   devops-project-network:
