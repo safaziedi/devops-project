@@ -15,21 +15,21 @@ services:
         networks:
             - devops-project-network
           
-    # postgres:
-    #     image: 'postgres:13.1-alpine'
-    #     container_name: postgres
-    #     environment:
-    #         - POSTGRES_USER=postgres
-    #         - POSTGRES_PASSWORD=8458
-    #         - POSTGRES_DB=testdb
-    #     expose:
-    #         - 5432
-    #     ports:
-    #         - "5432:5432"
-    #     networks:
-    #         - devops-project-network
-    #     volumes:
-    #         - postgres-data:/var/lib/postgresql/data
+    postgres:
+        image: 'postgres:13.1-alpine'
+        container_name: postgres
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=8458
+            - POSTGRES_DB=testdb
+        expose:
+            - 5432
+        ports:
+            - "5432:5432"
+        networks:
+            - devops-project-network
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
 
     frontend:
         image: ziadisafa/angular-15-crud:1.0.0
@@ -41,8 +41,8 @@ services:
         networks:
             - devops-project-network
 
-# volumes:
-#   postgres-data:
+volumes:
+  postgres-data:
 
 networks:
   devops-project-network:
