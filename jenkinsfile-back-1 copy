@@ -1,0 +1,100 @@
+pipeline {
+    agent any
+    tools {
+        maven 'maven_3.9.5'
+        dockerTool 'docker'
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhubpwdForjenkins')
+    }
+    stages {
+        stage('Get Code from Github & clean workspace') {
+                steps {
+                    // Clean before build
+                    cleanWs()
+                    // We need to explicitly checkout from SCM here
+                    checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                }
+        }
+
+        stage('Build maven'){
+            steps{
+                dir('./SpringbootMongodbAtlas') {
+                    sh 'mvn clean package'
+                     archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
+                }
+            }
+        }
+        stage('Sonar Qube Analysis') {
+            steps {
+                dir('./SpringbootMongodbAtlas') {
+                    withSonarQubeEnv('sonar'){
+                        sh 'mvn sonar:sonar'
+                    }
+                }
+            }
+        }
+
+        stage('Publish To Nexus') {
+            steps {
+                dir('./SpringbootMongodbAtlas') {
+                script {
+                    nexusArtifactUploader artifacts: [
+                        [
+                            artifactId: 'SpringbootMongodbAtlas', 
+                            classifier: '', 
+                            file: 'target/SpringbootMongodbAtlas-0.0.1.jar', 
+                            type: 'jar'
+                        ]
+                        ], 
+                        credentialsId: 'nexus', 
+                        groupId: 'example', 
+                        nexusUrl: 'nexus:8081', 
+                        nexusVersion: 'nexus3', 
+                        protocol: 'http', 
+                        repository: 'SpringbootMongodbAtlas', 
+                        version: '0.0.1'
+                }
+            }
+            }
+        }
+
+        stage('Create docker image'){
+            steps{
+                dir('./SpringbootMongodbAtlas') {
+                script{
+                    sh 'docker build -t ziadisafa/SpringbootMongodbAtlas:0.0.1 .'
+                }
+                }
+            }
+        }
+        stage('Push to docker hub'){
+            steps{
+                script{
+                    withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
+                        sh 'docker push ziadisafa/SpringbootMongodbAtlas:0.0.1'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to K8s') {
+            steps {
+                dir('./SpringbootMongodbAtlas') {
+                script {
+                    kubernetesDeploy(configs: "deployementSpringbootMongodbAtlasend.yaml", kubeconfigId: "kubernetes")
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+    success {
+      slackSend color: '#36a64f', message: "Deployment of SpringbootMongodbAtlasend with k8s succeeded!"
+    }
+    failure {
+      slackSend color: '#ff0000', message: "Deployment of SpringbootMongodbAtlasend with k8s failed!"
+    }
+  }
+}
