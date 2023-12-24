@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: back
-  replicas: 0 #à changer
+  replicas: 1
   template:
     metadata:
       labels:
@@ -32,16 +32,3 @@ spec:
       port: 8091 # The port that the service is running on in the cluster
       targetPort: 8091 # The port exposed by the service
       nodePort: 31111
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: back-svc
-# spec:
-#   selector:
-#     app: back
-#   ports:
-#     - protocol: "TCP"
-#       port: 8091 # The port that the service is running on in the cluster
-#       targetPort: 8091 # The port exposed by the service
-#   type: NodePort # type of the service.
