@@ -2,20 +2,13 @@ version: "2"
 services:
     backend:
         image: ziadisafa/backend:0.0.1
-        container_name: backend-by-docker-compose
+        container_name: backend
         ports:
             - "8092:8092"
-        networks:
-            - devops-project-network
     frontend:
         image: ziadisafa/angular-15-crud:1.0.0
-        container_name: frontend-by-docker-compose
+        container_name: frontend
         ports:
-            - "4200:80"
+            - "4300:80"
         depends_on:
             - backend
-        networks:
-            - devops-project-network
-
-networks:
-  devops-project-network:
