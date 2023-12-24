@@ -20,7 +20,7 @@ pipeline {
         stage('Build maven'){
             steps{
                 dir('./back') {
-                    sh 'mvn install -DskipTests=true'
+                    sh 'mvn clean package'
                      archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
                 }
             }
