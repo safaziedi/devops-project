@@ -43,7 +43,7 @@ pipeline {
                         [
                             artifactId: 'SpringbootMongodbAtlas', 
                             classifier: '', 
-                            file: 'target/SpringbootMongodbAtlas-0.0.1.jar', 
+                            file: 'target/backend-0.0.1.jar', 
                             type: 'jar'
                         ]
                         ], 
@@ -63,7 +63,7 @@ pipeline {
             steps{
                 dir('./SpringbootMongodbAtlas') {
                 script{
-                    sh 'docker build -t ziadisafa/SpringbootMongodbAtlas:0.0.1 .'
+                    sh 'docker build -t ziadisafa/backend:0.0.1 .'
                 }
                 }
             }
@@ -72,7 +72,7 @@ pipeline {
             steps{
                 script{
                     withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
-                        sh 'docker push ziadisafa/SpringbootMongodbAtlas:0.0.1'
+                        sh 'docker push ziadisafa/backend:0.0.1'
                     }
                 }
             }
@@ -82,7 +82,7 @@ pipeline {
             steps {
                 dir('./SpringbootMongodbAtlas') {
                 script {
-                    kubernetesDeploy(configs: "deployementSpringbootMongodbAtlasend.yaml", kubeconfigId: "kubernetes")
+                    kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
                     }
                 }
             }
