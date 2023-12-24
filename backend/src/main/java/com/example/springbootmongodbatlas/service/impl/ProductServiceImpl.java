@@ -31,12 +31,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateProduct(int id, Product product) {
         Product productVar = productRepo.findById(id).get();
-        productVar.setName(product.getName());
-        productVar.setPrice(product.getPrice());
-      productVar.setQuantity(product.getQuantity());
-      productRepo.save(productVar);
-      return productVar;
-
+        productVar.setTitle(product.getTitle());
+        productVar.setDescription(product.getDescription());
+        productRepo.save(productVar);
+        return productVar;
 
     }
 }
