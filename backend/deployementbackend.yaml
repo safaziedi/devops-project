@@ -17,7 +17,7 @@ spec:
           image: ziadisafa/backend:0.0.1
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8091
+            - containerPort: 8082
 ---
 apiVersion: v1
 kind: Service
@@ -29,6 +29,6 @@ spec:
     app: back
   ports:
     - protocol: "TCP"
-      port: 8091 # The port that the service is running on in the cluster
-      targetPort: 8091 # The port exposed by the service
+      port: 8082 # The port that the service is running on in the cluster
+      targetPort: 8082 # The port exposed by the service
       nodePort: 31111
