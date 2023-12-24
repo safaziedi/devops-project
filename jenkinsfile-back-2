@@ -8,7 +8,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhubpwdForjenkins')
     }
     stages {
-        stage('Get Code from Github & clean workspace') {
+        stage('Get Code from Github') {
                 steps {
                     // Clean before build
                     cleanWs()

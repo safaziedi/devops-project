@@ -1,5 +1,0 @@
-spring:
-  data:
-    mongodb:
-      uri: mongodb+srv://enggadda4u:enggadda4u%4012345@enggadda.owblstg.mongodb.net/?retryWrites=true&w=majority
-      database: productdb

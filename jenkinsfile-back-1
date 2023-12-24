@@ -8,7 +8,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhubpwdForjenkins')
     }
     stages {
-        stage('Get Code from Github & clean workspace') {
+        stage('Get Code from Github') {
                 steps {
                     // Clean before build
                     cleanWs()
@@ -19,7 +19,7 @@ pipeline {
 
         stage('Build maven'){
             steps{
-                dir('./back') {
+                dir('./backend') {
                     sh 'mvn clean package'
                      archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
                 }
@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Sonar Qube Analysis') {
             steps {
-                dir('./back') {
+                dir('./backend') {
                     withSonarQubeEnv('sonar'){
                         sh 'mvn sonar:sonar'
                     }
@@ -37,22 +37,22 @@ pipeline {
 
         stage('Publish To Nexus') {
             steps {
-                dir('./back') {
+                dir('./backend') {
                 script {
                     nexusArtifactUploader artifacts: [
                         [
-                            artifactId: 'spring-boot-jpa-postgresql', 
-                            classifier: '', 
-                            file: 'target/spring-boot-jpa-postgresql-0.0.1.jar', 
+                            artifactId: 'backend', 
+                            classifier: '',
+                            file: 'target/backend-0.0.1.jar', 
                             type: 'jar'
                         ]
                         ], 
                         credentialsId: 'nexus', 
-                        groupId: 'bezkoder', 
+                        groupId: 'example', 
                         nexusUrl: 'nexus:8081', 
                         nexusVersion: 'nexus3', 
                         protocol: 'http', 
-                        repository: 'spring-boot-jpa-postgresql', 
+                        repository: 'backend', 
                         version: '0.0.1'
                 }
             }
@@ -61,9 +61,9 @@ pipeline {
 
         stage('Create docker image'){
             steps{
-                dir('./back') {
+                dir('./backend') {
                 script{
-                    sh 'docker build -t ziadisafa/spring-boot-jpa-postgresql:0.0.1 .'
+                    sh 'docker build -t ziadisafa/backend:0.0.1 .'
                 }
                 }
             }
@@ -72,7 +72,7 @@ pipeline {
             steps{
                 script{
                     withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
-                        sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
+                        sh 'docker push ziadisafa/backend:0.0.1'
                     }
                 }
             }
@@ -80,7 +80,7 @@ pipeline {
 
         stage('Deploy to K8s') {
             steps {
-                dir('./back') {
+                dir('./backend') {
                 script {
                     kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
                     }
@@ -91,10 +91,10 @@ pipeline {
 
     post {
     success {
-      slackSend color: '#36a64f', message: "Deployment of backend with k8s succeeded!"
+      slackSend color: '#36a64f', message: "Deployment of backendend with k8s succeeded!"
     }
     failure {
-      slackSend color: '#ff0000', message: "Deployment of backend with k8s failed!"
+      slackSend color: '#ff0000', message: "Deployment of backendend with k8s failed!"
     }
   }
 }
