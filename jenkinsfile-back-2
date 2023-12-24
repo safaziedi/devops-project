@@ -35,7 +35,7 @@ pipeline {
             }
         }
 
-        stage('Upload jar To Nexus') {
+        stage('Publish To Nexus') {
             steps {
                 dir('./back') {
                 script {

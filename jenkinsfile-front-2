@@ -29,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('Push To Nexus') {
+        stage('Publish To Nexus') {
             steps {
                 dir('./front') {
                 withCredentials([file(credentialsId: 'mynpm-cred', variable: 'mynpmrc')]) {
