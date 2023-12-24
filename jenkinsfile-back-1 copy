@@ -19,7 +19,7 @@ pipeline {
 
         stage('Build maven'){
             steps{
-                dir('./SpringbootMongodbAtlas') {
+                dir('./backend') {
                     sh 'mvn clean package'
                      archiveArtifacts artifacts: 'target/*.jar', onlyIfSuccessful: true
                 }
@@ -27,7 +27,7 @@ pipeline {
         }
         stage('Sonar Qube Analysis') {
             steps {
-                dir('./SpringbootMongodbAtlas') {
+                dir('./backend') {
                     withSonarQubeEnv('sonar'){
                         sh 'mvn sonar:sonar'
                     }
@@ -37,12 +37,12 @@ pipeline {
 
         stage('Publish To Nexus') {
             steps {
-                dir('./SpringbootMongodbAtlas') {
+                dir('./backend') {
                 script {
                     nexusArtifactUploader artifacts: [
                         [
-                            artifactId: 'SpringbootMongodbAtlas', 
-                            classifier: '', 
+                            artifactId: 'backend', 
+                            classifier: '',
                             file: 'target/backend-0.0.1.jar', 
                             type: 'jar'
                         ]
@@ -52,7 +52,7 @@ pipeline {
                         nexusUrl: 'nexus:8081', 
                         nexusVersion: 'nexus3', 
                         protocol: 'http', 
-                        repository: 'SpringbootMongodbAtlas', 
+                        repository: 'backend', 
                         version: '0.0.1'
                 }
             }
@@ -61,7 +61,7 @@ pipeline {
 
         stage('Create docker image'){
             steps{
-                dir('./SpringbootMongodbAtlas') {
+                dir('./backend') {
                 script{
                     sh 'docker build -t ziadisafa/backend:0.0.1 .'
                 }
@@ -80,7 +80,7 @@ pipeline {
 
         stage('Deploy to K8s') {
             steps {
-                dir('./SpringbootMongodbAtlas') {
+                dir('./backend') {
                 script {
                     kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
                     }
@@ -91,10 +91,10 @@ pipeline {
 
     post {
     success {
-      slackSend color: '#36a64f', message: "Deployment of SpringbootMongodbAtlasend with k8s succeeded!"
+      slackSend color: '#36a64f', message: "Deployment of backendend with k8s succeeded!"
     }
     failure {
-      slackSend color: '#ff0000', message: "Deployment of SpringbootMongodbAtlasend with k8s failed!"
+      slackSend color: '#ff0000', message: "Deployment of backendend with k8s failed!"
     }
   }
 }
