@@ -1,22 +1,5 @@
 version: "1"
 services:
-  postgres:
-    image: 'postgres:13.1-alpine'
-    networks:
-      - devops-project-network2
-    container_name: postgres
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    # expose:
-    #   - 5432
-    ports:
-      - 5433:5432
-    environment:
-         - POSTGRES_PASSWORD=8458
-         - POSTGRES_USER=postgres
-         - POSTGRES_DB=testdb
-    restart: unless-stopped
-  
   nexus:
     image: sonatype/nexus3:latest
     container_name: nexus
@@ -27,8 +10,6 @@ services:
     environment:
       - NEXUS_SECURITY_RANDOMPASSWORD=false
       - NEXUS_SECURITY_ADMINPASSWORD=admin123
-    networks:
-      - devops-project-network2
     restart: unless-stopped
 
   jenkins:
@@ -43,13 +24,7 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - devops-project-network2
     restart: unless-stopped
-    # depends_on:
-    #   - "postgres"
-    # links:
-    #   - "postgres"
 
   
   sonar:
@@ -59,16 +34,9 @@ services:
       - "9000:9000"
     volumes:
       - sonar_home:/var/lib/sonar
-    networks:
-      - devops-project-network2
     restart: unless-stopped
 
 volumes:
   nexus-data:
   jenkins_home:
   sonar_home:
-  postgres-data:
-
-networks:
-  devops-project-network2:
-      driver: host
