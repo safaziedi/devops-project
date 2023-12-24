@@ -3,7 +3,7 @@ services:
   postgres:
     image: 'postgres:13.1-alpine'
     networks:
-      - devops-project-network
+      - devops-project-network2
     container_name: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
@@ -28,7 +28,7 @@ services:
       - NEXUS_SECURITY_RANDOMPASSWORD=false
       - NEXUS_SECURITY_ADMINPASSWORD=admin123
     networks:
-      - devops-project-network
+      - devops-project-network2
     restart: unless-stopped
 
   jenkins:
@@ -44,7 +44,7 @@ services:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - devops-project-network
+      - devops-project-network2
     restart: unless-stopped
     # depends_on:
     #   - "postgres"
@@ -60,7 +60,7 @@ services:
     volumes:
       - sonar_home:/var/lib/sonar
     networks:
-      - devops-project-network
+      - devops-project-network2
     restart: unless-stopped
 
 volumes:
@@ -70,5 +70,5 @@ volumes:
   postgres-data:
 
 networks:
-  devops-project-network:
+  devops-project-network2:
       driver: host
