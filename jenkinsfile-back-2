@@ -71,12 +71,13 @@ pipeline {
         stage('Push to docker hub'){
             steps{
                 script{
-                    sh 'docker login -u ziadisafa --password safaziadi07012001'
-                    sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
-                    
+                    withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
+                        sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
+                    }
                 }
             }
         }
+        
         stage('Docker compose'){
             steps{
                 script{

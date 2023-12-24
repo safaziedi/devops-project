@@ -52,9 +52,9 @@ pipeline {
         stage('Push to docker hub'){
             steps{
                 script{
-                    sh 'docker login -u ziadisafa --password safaziadi07012001'
-                    sh 'docker push ziadisafa/angular-15-crud:1.0.0'
-                    
+                    withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
+                        sh 'docker push ziadisafa/angular-15-crud:1.0.0'
+                    }
                 }
             }
         }

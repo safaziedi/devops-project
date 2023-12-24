@@ -77,25 +77,16 @@ pipeline {
                 }
             }
         }
-        // stage('Push to docker hub'){
-        //     steps{
-        //         script{
-        //             sh 'docker login -u ziadisafa --password safaziadi07012001'
-        //             sh 'docker push ziadisafa/spring-boot-jpa-postgresql:0.0.1'
-                    
-        //         }
-        //     }
-        // }
 
-        // stage('Deploy to K8s') {
-        //     steps {
-        //         dir('./back') {
-        //         script {
-        //             kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploy to K8s') {
+            steps {
+                dir('./back') {
+                script {
+                    kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
+                    }
+                }
+            }
+        }
     }
 
     post {
