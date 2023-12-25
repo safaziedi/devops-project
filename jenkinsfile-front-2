@@ -4,6 +4,9 @@ pipeline {
         nodejs 'nodejs-21.0.0'
         dockerTool 'docker'
     }
+    environment {
+        RELEASE_VERSION = '1.0.0'
+    }
     stages {
         stage('Get Code from Github & clean workspace') {
                 steps {
@@ -44,7 +47,7 @@ pipeline {
             steps{
                 dir('./front') {
                 script{
-                    sh 'docker build -t ziadisafa/angular-15-crud:1.0.0 .'
+                    sh "docker build -t ziadisafa/angular-15-crud:${RELEASE_VERSION} ."
                 }
                 }
             }
@@ -53,7 +56,7 @@ pipeline {
             steps{
                 script{
                     withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
-                        sh 'docker push ziadisafa/angular-15-crud:1.0.0'
+                        sh "docker push ziadisafa/angular-15-crud:${RELEASE_VERSION}"
                     }
                 }
             }
