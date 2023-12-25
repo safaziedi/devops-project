@@ -60,34 +60,34 @@ pipeline {
             }
         }
 
-        // stage('Create docker image'){
-        //     steps{
-        //         dir('./backend') {
-        //         script{
-        //             sh 'docker build -t ziadisafa/backend:1.0.0 .'
-        //         }
-        //         }
-        //     }
-        // }
-        // stage('Push to docker hub'){
-        //     steps{
-        //         script{
-        //             withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
-        //                 sh '''docker push ziadisafa/backend:$RELEASE_VERSION'''
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Create docker image'){
+            steps{
+                dir('./backend') {
+                script{
+                    sh "docker build -t ziadisafa/backend:${RELEASE_VERSION} ."
+                }
+                }
+            }
+        }
+        stage('Push to docker hub'){
+            steps{
+                script{
+                    withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
+                        sh "docker push ziadisafa/backend:${RELEASE_VERSION}"
+                    }
+                }
+            }
+        }
 
-        // stage('Deploy to K8s') {
-        //     steps {
-        //         dir('./backend') {
-        //         script {
-        //             kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Deploy to K8s') {
+            steps {
+                dir('./backend') {
+                script {
+                    kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
+                    }
+                }
+            }
+        }
     }
 
     post {
