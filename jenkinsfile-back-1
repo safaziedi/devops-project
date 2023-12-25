@@ -44,7 +44,7 @@ pipeline {
                         [
                             artifactId: 'backend', 
                             classifier: '',
-                            file: 'target/backend-'$RELEASE_VERSION'.jar', 
+                            file: "target/backend-${RELEASE_VERSION}.jar", 
                             type: 'jar'
                         ]
                         ], 
@@ -54,7 +54,7 @@ pipeline {
                         nexusVersion: 'nexus3', 
                         protocol: 'http', 
                         repository: 'backend', 
-                        version: '$RELEASE_VERSION'
+                        version: "${RELEASE_VERSION}"
                 }
             }
             }
