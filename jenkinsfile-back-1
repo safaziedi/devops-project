@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhubpwdForjenkins')
+        RELEASE_VERSION = '1.0.0'
     }
     stages {
         stage('Get Code from Github') {
@@ -43,7 +44,7 @@ pipeline {
                         [
                             artifactId: 'backend', 
                             classifier: '',
-                            file: 'target/backend-0.0.1.jar', 
+                            file: 'target/backend-'$RELEASE_VERSION'.jar', 
                             type: 'jar'
                         ]
                         ], 
@@ -53,40 +54,40 @@ pipeline {
                         nexusVersion: 'nexus3', 
                         protocol: 'http', 
                         repository: 'backend', 
-                        version: '0.0.1'
+                        version: '$RELEASE_VERSION'
                 }
             }
             }
         }
 
-        stage('Create docker image'){
-            steps{
-                dir('./backend') {
-                script{
-                    sh 'docker build -t ziadisafa/backend:0.0.1 .'
-                }
-                }
-            }
-        }
-        stage('Push to docker hub'){
-            steps{
-                script{
-                    withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
-                        sh 'docker push ziadisafa/backend:0.0.1'
-                    }
-                }
-            }
-        }
+        // stage('Create docker image'){
+        //     steps{
+        //         dir('./backend') {
+        //         script{
+        //             sh 'docker build -t ziadisafa/backend:1.0.0 .'
+        //         }
+        //         }
+        //     }
+        // }
+        // stage('Push to docker hub'){
+        //     steps{
+        //         script{
+        //             withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
+        //                 sh '''docker push ziadisafa/backend:$RELEASE_VERSION'''
+        //             }
+        //         }
+        //     }
+        // }
 
-        stage('Deploy to K8s') {
-            steps {
-                dir('./backend') {
-                script {
-                    kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
-                    }
-                }
-            }
-        }
+        // stage('Deploy to K8s') {
+        //     steps {
+        //         dir('./backend') {
+        //         script {
+        //             kubernetesDeploy(configs: "deployementbackend.yaml", kubeconfigId: "kubernetes")
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     post {

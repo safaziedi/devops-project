@@ -43,7 +43,7 @@ pipeline {
                         [
                             artifactId: 'backend', 
                             classifier: '',
-                            file: 'target/backend-0.0.1.jar', 
+                            file: 'target/backend-1.0.0.jar', 
                             type: 'jar'
                         ]
                         ], 
@@ -53,7 +53,7 @@ pipeline {
                         nexusVersion: 'nexus3', 
                         protocol: 'http', 
                         repository: 'backend', 
-                        version: '0.0.1'
+                        version: '1.0.0'
                 }
             }
             }
@@ -63,7 +63,7 @@ pipeline {
             steps{
                 dir('./backend') {
                 script{
-                    sh 'docker build -t ziadisafa/backend:0.0.1 .'
+                    sh 'docker build -t ziadisafa/backend:1.0.0 .'
                 }
                 }
             }
@@ -72,7 +72,7 @@ pipeline {
             steps{
                 script{
                     withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
-                        sh 'docker push ziadisafa/backend:0.0.1'
+                        sh 'docker push ziadisafa/backend:1.0.0'
                     }
                 }
             }

@@ -1,7 +1,7 @@
 version: "2"
 services:
     backend:
-        image: ziadisafa/backend:0.0.1
+        image: ziadisafa/backend:1.0.0
         # container_name: backend
         ports:
             - "8092:8092"
