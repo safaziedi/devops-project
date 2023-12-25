@@ -2,11 +2,16 @@ pipeline {
     agent any
     tools {
         nodejs 'nodejs-21.0.0'
+        dockerTool 'docker'
+    }
+    environment {
+        RELEASE_VERSION = '1.0.0'
     }
     stages {
-        stage('Get Code from Github') {
+        stage('Get Code from Github & clean workspace') {
                 steps {
-                        checkout scmGit(branches: [[name: '*/release/2.0.0']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
+                        cleanWs()
+                        checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/safaziedi/spring-boot-angular-postgresql']])
                     }
         }
         
@@ -26,5 +31,53 @@ pipeline {
                 }
             }
         }
+
+        stage('Publish To Nexus') {
+            steps {
+                dir('./front') {
+                withCredentials([file(credentialsId: 'mynpm-cred', variable: 'mynpmrc')]) {
+                    script{
+                        sh "npm publish --userconfig ${mynpmrc} --loglevel verbose"
+                    }
+                }
+            }
+            }
+        }
+        stage('Create docker image'){
+            steps{
+                dir('./front') {
+                script{
+                    sh "docker build -t ziadisafa/angular-15-crud:${RELEASE_VERSION} ."
+                }
+                }
+            }
+        }
+        stage('Push to docker hub'){
+            steps{
+                script{
+                    withDockerRegistry(credentialsId: 'dockerhubpwdForjenkins', toolName: 'docker') {
+                        sh "docker push ziadisafa/angular-15-crud:${RELEASE_VERSION}"
+                    }
+                }
+            }
+        }
+        stage('Deploy to K8s') {
+            steps {
+                dir('./front') {
+                script {
+                    kubernetesDeploy(configs: "deployementfrontend.yaml", kubeconfigId: "kubernetes")
+                    }
+                }
+            }
+        }
     }
+
+    post {
+    success {
+      slackSend color: '#36a64f', message: "Deployment of frontend with k8s succeeded!"
+    }
+    failure {
+      slackSend color: '#ff0000', message: "Deployment of frontend with k8s failed!"
+    }
+  }
 }
