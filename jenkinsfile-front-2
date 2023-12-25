@@ -61,9 +61,7 @@ pipeline {
         stage('Docker compose'){
             steps{
                 script{
-                    sh 'docker rm -f frontend'
-                    sh 'docker rm -f backend'
-                    sh 'docker-compose -f docker-compose-app.yaml up -d'
+                    sh 'docker-compose -f docker-compose-app.yaml up'
                 }
             }
         }
