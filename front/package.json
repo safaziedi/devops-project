@@ -1,6 +1,6 @@
 {
   "name": "angular-15-crud",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +9,9 @@
     "test": "ng test",
     "sonar": "sonar-scanner"
   },
-  "private": true,
+  "publishConfig": {
+    "registry": "http://nexus:8081/repository/angular-15-crud/"
+  },
   "dependencies": {
     "@angular/animations": "^15.0.0",
     "@angular/common": "^15.0.0",
