@@ -20,8 +20,6 @@ pipeline {
                 dir('./front') {
                     sh 'npm install'
                     sh 'npm run build'
-                    archiveArtifacts artifacts: 'dist/angular-15-crud', onlyIfSuccessful: true
-
                 }
             }
         }
