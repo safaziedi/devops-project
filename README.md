@@ -1,15 +1,6 @@
 ## slack notification 
 https://app.slack.com/client/T069JKP1Q1L/C069ANYQ079
 
-## K8s
-frontend : http://localhost:80
-backend : http://localhost:8091 
-
-## Docker Compose
-docker-compose -f .\docker-compose-app.yaml up
-frontend : http://localhost:4200
-backend : http://localhost:8092 
-
 ## Docker Compose for jenkins + nexus + sonar
 docker-compose up
 
@@ -18,10 +9,17 @@ jenkins: http://localhost:8080/    + docker logs jenkins si besoin adminPassword
 
 nexus: http://localhost:8081/ 
 
-sonarqube : http://localhost:9000/  
+sonarqube : http://localhost:9000/ 
 
-## Git flow
-git flow init
+## K8s
+frontend : http://localhost:80
+backend : http://localhost:8091 
+
+## Docker Compose
+docker-compose -f .\docker-compose-app.yaml up
+frontend : http://localhost:4200
+backend : http://localhost:8092 
+ 
 
 ## Run Spring Boot application
 ```
