@@ -17,7 +17,7 @@ backend : http://localhost:8092
 
 ## Docker Compose
 docker-compose -f .\docker-compose-app.yaml up
-frontend : http://localhost:4200
+frontend : http://localhost:4300
 backend : http://localhost:8092 
  
 
@@ -30,5 +30,5 @@ The Spring Boot Server will export API at port `8092`.
 ## Run Angular Client
 ```
 npm install
-ng serve     http://localhost:4200/
+ng serve     http://localhost:4300/
 ```
