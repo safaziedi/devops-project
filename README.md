@@ -13,7 +13,7 @@ sonarqube : http://localhost:9000/
 
 ## K8s
 frontend : http://localhost:80
-backend : http://localhost:8091 
+backend : http://localhost:8092
 
 ## Docker Compose
 docker-compose -f .\docker-compose-app.yaml up
@@ -25,7 +25,7 @@ backend : http://localhost:8092
 ```
 mvn spring-boot:run
 ```
-The Spring Boot Server will export API at port `8091`.
+The Spring Boot Server will export API at port `8092`.
 
 ## Run Angular Client
 ```
