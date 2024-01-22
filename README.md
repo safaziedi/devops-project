@@ -1,25 +1,9 @@
-## slack notification 
-https://app.slack.com/client/T069JKP1Q1L/C069ANYQ079
-
 ## Docker Compose for jenkins + nexus + sonar
 docker-compose up
 
-credentials:
-jenkins: http://localhost:8080/    + docker logs jenkins si besoin adminPassword
-
+jenkins: http://localhost:8080/
 nexus: http://localhost:8081/ 
-
 sonarqube : http://localhost:9000/ 
-
-## K8s
-frontend : http://localhost:80
-backend : http://localhost:8092
-
-## Docker Compose
-docker-compose -f .\docker-compose-app.yaml up
-frontend : http://localhost:4300
-backend : http://localhost:8092 
- 
 
 ## Run Spring Boot application
 ```
